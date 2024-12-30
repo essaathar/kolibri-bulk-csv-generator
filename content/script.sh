@@ -2,39 +2,59 @@
 
 headers="Path *,Title *,Source ID,Description,Author,Language,License ID *,License Description,Copyright Holder,Thumbnail"
 license_id="CC BY"
-copyright_holder="Deaf Reach"
+copyright_holder="My Organization"
 description=""
-author="Deaf Reach"
+author="My Organization"
 language="en"
 
 # Function which firstly converts all arguments to lowercase, then capitalizes first letter of each word
-tc() { set ${*,,} ; echo ${*^} ; }
+tc() {
+    set ${*,,}
+    echo ${*^}
+}
+# Credits: https://stackoverflow.com/questions/42925485/making-a-script-that-transforms-sentences-to-title-case
 
-# Traverse over the main channel folder
+# Extended functionality to remove conjuctions, prepositions, and articles
+title_case() {
+    set ${*,,}
+    set ${*^}
+    echo -n "$1 "
+    shift 1
+    for f in ${*}; do
+        case $f in A | An | And | As | At | But | By | For | In | Nor | Of | On | Or | So | The | To | Up | Yet)
+            echo -n "${f,,} "
+            ;;
+        *) echo -n "$f " ;;
+        esac
+    done
+    echo
+}
+# Credits: https://stackoverflow.com/questions/42925485/making-a-script-that-transforms-sentences-to-title-case
+
+# traverse over the main channel folder
 for dir in */; do
-    if [ -d $dir ]; then # If the main channel folder found then process it
+    if [ -d $dir ]; then # if the main channel folder found then process it
         for content in $(find $dir | sort); do
-            if [ -f $content ]; then # If a file found
+            if [ -f $content ]; then # if a file found
                 echo "FILE: $content"
-                base_name=$(basename $content) # get the file name (w/ ext)
-                filename="${base_name%.*}" # extract only filename
-                filename=$(echo $filename | sed -r 's/[-_]+/ /g')
+                base_name=$(basename $content)                    # get the file name (w/ ext)
+                filename="${base_name%.*}"                        # extract only filename
+                filename=$(echo $filename | sed -r 's/[-_]+/ /g') # remove any hyphens/underscores
 
-                processed_filename=$(tc "$filename")
+                processed_filename=$(title_case "$filename")
                 ext="${base_name##*.}"
                 echo "FILE NAME: $processed_filename"
                 echo -e "EXT: $ext\n"
 
             elif [ -d $content ]; then
                 echo "DIR: $content"
-                base_name=$(basename $content)
-                dirname=$(echo $base_name | sed -r 's/[-_]+/ /g')
-                processed_dirname=$(tc "$dirname")
+                base_name=$(basename $content)                    # get the dir name
+                dirname=$(echo $base_name | sed -r 's/[-_]+/ /g') # remove any hyphens/underscores
+                processed_dirname=$(title_case "$dirname")
                 echo -e "DIR NAME: $processed_dirname\n"
-                # echo $dirname | sed -r 's/[-_]+/!/g'
             fi
         done
-    else # If main channel folder not found, exit
+    else # if main channel folder not found, exit
         echo "ERROR: Folder not found..."
         exit
     fi
