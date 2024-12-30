@@ -3,7 +3,7 @@
 headers="Path *,Title *,Source ID,Description,Author,Language,License ID *,License Description,Copyright Holder,Thumbnail"
 license_id="CC BY"
 copyright_holder="My Organization"
-description=""
+description="Put folder description here"
 author="My Organization"
 language="en"
 
@@ -16,8 +16,8 @@ tc() {
 
 # Extended functionality to remove conjuctions, prepositions, and articles
 title_case() {
-    set ${*,,}
-    set ${*^}
+    set ${*,,} # convert all args to lowercase
+    set ${*^} # capitalize first letter of each word
     echo -n "$1 "
     shift 1
     for f in ${*}; do
@@ -30,6 +30,16 @@ title_case() {
     echo
 }
 # Credits: https://stackoverflow.com/questions/42925485/making-a-script-that-transforms-sentences-to-title-case
+
+i=0
+content_csv="out_Content.csv"
+# clear the contents of the content.csv file, if it exists
+if [ -f $content_csv ]; then
+    truncate -s 0 $content_csv
+fi
+
+# write the headers
+echo $headers >> $content_csv
 
 # traverse over the main channel folder
 for dir in */; do
@@ -53,6 +63,7 @@ for dir in */; do
                 processed_dirname=$(title_case "$dirname")
                 echo -e "DIR NAME: $processed_dirname\n"
             fi
+            ((i++))
         done
     else # if main channel folder not found, exit
         echo "ERROR: Folder not found..."
