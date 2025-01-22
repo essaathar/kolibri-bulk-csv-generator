@@ -1,2 +1,13 @@
 Path *,Title *,Source ID,Description,Author,Language,License ID *,License Description,Copyright Holder,Thumbnail
-Path *,Title *,Source ID,Description,Author,Language,License ID *,License Description,Copyright Holder,Thumbnail
+sample-csv-channel-root/,Sample Csv Channel Root ,0,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes,Contentnodes ,1,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes/audio,Audio ,2,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes/audio/Whale_sounds.mp3,Whale Sounds ,3,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,
+sample-csv-channel-root/contentnodes/document,Document ,4,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes/document/commonlit_the-supreme-court-s-ruling-in-brown-vs-board-of-education_student.pdf,Commonlit the Supreme Court S Ruling in Brown Vs Board of Education Student ,5,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,
+sample-csv-channel-root/contentnodes/html5,Html5 ,6,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes/html5/html5_react.zip,Html5 React ,7,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,sample-csv-channel-root/contentnodes/html5/html5_react-thumb.jpg
+sample-csv-channel-root/contentnodes/html5/html5_vuejs.zip,Html5 Vuejs ,8,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,sample-csv-channel-root/contentnodes/html5/html5_vuejs-thumb.jpg
+sample-csv-channel-root/contentnodes/html5/html5_wget_scraped.zip,Html5 Wget Scraped ,9,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,sample-csv-channel-root/contentnodes/html5/html5_wget_scraped-thumb.jpg
+sample-csv-channel-root/contentnodes/video,Video ,10,Put folder description here,Deaf Reach,en,,,Deaf Reach,
+sample-csv-channel-root/contentnodes/video/Wave_particle_duality.mp4,Wave Particle Duality ,11,Put folder description here,Deaf Reach,en,CC BY,,Deaf Reach,
