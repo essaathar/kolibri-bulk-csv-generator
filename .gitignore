@@ -1,2 +1,8 @@
 rough.txt
-content-copy
+content-copy/
+**/.env
+**/.ricecookerfilecache
+**/chefdata
+**/logs
+**/restore
+**/storage

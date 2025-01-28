@@ -53,20 +53,34 @@ has_thumbnail() {
 
     result=""
     dirname="$2"
-    # echo "dirname: $dirname"
+    
     for key in "${!dict[@]}"; do
         # echo "KEY: $key, VALUE: ${dict[$key]}"
+        # if [[ "$dirname" =~ "$key" ]]; then
+
         if [[ "$key" == "$dirname" ]]; then
             result="${dict[$key]}"
             # echo "yes"
             break
         fi
     done
+
+    if [[ -z $result ]]; then
+        # check if similar exp found
+        for key in "${!dict[@]}"; do
+            # echo "KEY: $key, VALUE: ${dict[$key]}"
+            if [[ "$dirname" =~ "$key" ]]; then
+                result="${dict[$key]}"
+                break
+            fi
+        done
+    fi
     echo "$result"
 }
 
+
 i=0
-content_csv="out_Content.csv"
+content_csv="Content.csv"
 # clear the contents of the content.csv file, if it exists
 if [ -f $content_csv ]; then
     truncate -s 0 $content_csv
@@ -82,14 +96,24 @@ thumbnails=$(find . -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" 
 
 # echo "THUMBNAILS: $thumbnails"
 
+main_channel_dir=""
 # traverse over the main channel folder
 for dir in */; do
-    if [ -d $dir ]; then # if the main channel folder found then process it
+    if [[ -d $dir && $(basename $dir) != ".ricecookercache" && $(basename $dir) != "chefdata" && $(basename $dir) != "logs" && $(basename $dir) != "restore" && $(basename $dir) != "storage" ]]; then # if the main channel folder found then process it
+        main_channel_dir=$(basename $dir)
+        # echo "dir -> $parent_dir"
         for content in $(find $dir | sort); do
-            # skip if an image (thumbnail) found
-            if [[ -f "$content" && ("$content" == *.jpg || "$content" == *.jpeg || "$content" == *.png) ]]; then
+            # skip if channel name dir found since that isn't included in Content.csv
+            if [[ $(basename $dir) == $(basename $content) ]]; then
                 continue
-            
+            # parent_dir=$(basename $dir)
+            # content_dir=$(basename $content)
+            # echo "parent_dir -> $parent_dir, content ->"
+
+            # skip if an image (thumbnail) found
+            elif [[ -f "$content" && ("$content" == *.jpg || "$content" == *.jpeg || "$content" == *.png) ]]; then
+                continue
+
             elif [ -f $content ]; then # if a file (content node) is found
                 echo "FILE: $content"
                 base_name=$(basename $content) # get the file name (w/ ext)
@@ -97,7 +121,7 @@ for dir in */; do
                 echo -e "FILE NAME: $filename\n"
                 processed_filename=$(echo $filename | sed -r 's/[-_]+/ /g') # remove any hyphens/underscores
 
-                processed_filename=$(title_case "$processed_filename")
+                # processed_filename=$(title_case "$processed_filename")
                 ext="${base_name##*.}"
                 echo "FILE NAME: $processed_filename"
                 echo -e "EXT: $ext\n"
@@ -118,7 +142,8 @@ for dir in */; do
                 base_name=$(basename $content) # get the dir name
                 echo -e "DIR NAME: $base_name\n"
                 dirname=$(echo $base_name | sed -r 's/[-_]+/ /g') # remove any hyphens/underscores
-                processed_dirname=$(title_case "$dirname")
+                # processed_dirname=$(title_case "$dirname")
+                processed_dirname=$dirname
                 echo -e "DIR NAME: $processed_dirname\n"
 
                 row="$content,$processed_dirname,$i,$description,$author,$language,,,$copyright_holder,"
@@ -132,8 +157,25 @@ for dir in */; do
             fi
             ((i++))
         done
-    else # if main channel folder not found, exit
-        echo "ERROR: Folder not found..."
-        exit
     fi
 done
+
+if [ -z $main_channel_dir ]; then
+    echo "Main channel folder not found. Exiting..."
+fi
+
+# activate the kolibri ricecooker venv (optional)
+if [[ -d ~/ricecooker-venv ]]; then
+    # echo "venv exists"
+    source ~/ricecooker-venv/bin/activate
+else
+    echo "no such venv"
+fi
+
+# load the env file for acccessing the Kolibri API token
+source "$(dirname $0)/.env"
+# echo "MY API TOKEN = $API_TOKEN"
+
+# Run the linecook file which scans the content folder and the content and channel csvs and then uploads the channel on Kolibri, through ricecooker
+python3 ../linecook.py --token=$API_TOKEN --channeldir="./$main_channel_dir"
+

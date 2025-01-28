@@ -7,11 +7,12 @@ The script eliminates the need to manually create the `Content.csv` file when pr
 
 ## Features
 - Automates the generation of the `Channel.csv` and `Content.csv` files for Kolibri channels.
-- Scans a local folder structure to extract metadata for resources.
-- Supports the CSV Workflow for bulk uploading content on Kolibri Studio.
+- Uploads the channel on Kolibri Studio.
 
 ## Prerequisites
-- You have a local folder containing your content organized in the desired channel structure, as described in the official [CSV Workflow repository](https://github.com/learningequality/sample-channels/tree/master/channels/csv_channel).
-- [Ricecooker](https://github.com/learningequality/ricecooker) is installed.
-- Bash is installed on your system.
+- Python version `3.10>=`
+- `ricecooker`
+- `ffmpeg`
 
+## Assumptions (TODO)
+- `.env` file present inside `content` folder, which has the Kolibri API Token.

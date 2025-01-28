@@ -66,7 +66,7 @@ has_thumbnail() {
 }
 
 i=0
-content_csv="out_Content.csv"
+content_csv="Content.csv"
 # clear the contents of the content.csv file, if it exists
 if [ -f $content_csv ]; then
     truncate -s 0 $content_csv
@@ -87,6 +87,8 @@ for dir in */; do
     if [ -d $dir ]; then # if the main channel folder found then process it
         for content in $(find $dir | sort); do
             # skip if an image (thumbnail) found
+            # if [[  ]]; then
+
             if [[ -f "$content" && ("$content" == *.jpg || "$content" == *.jpeg || "$content" == *.png) ]]; then
                 continue
             
@@ -138,3 +140,5 @@ for dir in */; do
         exit
     fi
 done
+
+# run linecook.py
