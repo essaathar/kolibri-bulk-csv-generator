@@ -12,3 +12,14 @@ The script eliminates the need to manually create the `Content.csv` file when pr
 ## Assumptions (TODO)
 - Have Python 3.10 or greater.
 - `.env` file present inside `content` folder, in which the `API_TOKEN` is the **Kolibri API Token**, taken from [Account Settings](https://studio.learningequality.org/en/settings/#/account) on Kolibri Studio.
+
+## Install
+```
+pip install -r requirements.txt
+```
+
+## Usage
+```
+chmod +x ./content/script.sh
+./content/script.sh
+```
