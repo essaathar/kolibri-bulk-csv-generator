@@ -1,5 +1,5 @@
-rough.txt
-content-copy/
+**/rough.txt
+**/rough.sh
 **/.env
 **/.ricecookerfilecache
 **/chefdata
